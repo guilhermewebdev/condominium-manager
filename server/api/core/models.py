@@ -1,7 +1,17 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+
+class Condominium(models.Model):
+    name = models.CharField(
+        max_length=150
+    )
 class PlanOfAccounts(models.Model):
+    condominium = models.ForeignKey(
+        Condominium,
+        on_delete=models.CASCADE,
+        related_name='plan_of_accounts',
+    )
     name = models.CharField(
         max_length=150,
     )
@@ -20,6 +30,11 @@ class PlanOfAccounts(models.Model):
     )
 
 class Client(models.Model):
+    condominium = models.ForeignKey(
+        Condominium,
+        on_delete=models.CASCADE,
+        related_name='clients',
+    )
     name = models.CharField(
         max_length=150,
     )
@@ -28,6 +43,11 @@ class Client(models.Model):
     )
 
 class Expense(models.Model):
+    condominium = models.ForeignKey(
+        Condominium,
+        on_delete=models.CASCADE,
+        related_name='expenses',
+    )
     plan_of_account = models.ForeignKey(
         PlanOfAccounts,
         on_delete=models.DO_NOTHING,
@@ -44,6 +64,11 @@ class Expense(models.Model):
     )
 
 class Receiving(models.Model):
+    condominium = models.ForeignKey(
+        Condominium,
+        on_delete=models.CASCADE,
+        related_name='receipts',
+    )
     client = models.ForeignKey(
         Client,
         on_delete=models.DO_NOTHING,
