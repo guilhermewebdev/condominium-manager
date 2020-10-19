@@ -27,4 +27,16 @@ class Client(models.Model):
         max_length=5
     )
 
-    
+class Expense(models.Model):
+    plan_of_account = models.ForeignKey(
+        PlanOfAccounts,
+        on_delete=models.DO_NOTHING,
+        related_name='expenses'
+    )
+    value = models.IntegerField(
+        verbose_name='Value'
+    )
+    date = models.DateTimeField(
+        verbose_name='Date',
+    )
+
