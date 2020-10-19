@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class PlanOfAccounts(models.Model):
     name = models.CharField(
-        max_lengt=150,
+        max_length=150,
     )
     due_date = models.IntegerField(
         verbose_name="Due Date",
@@ -34,9 +34,27 @@ class Expense(models.Model):
         related_name='expenses'
     )
     value = models.IntegerField(
-        verbose_name='Value'
+        verbose_name='Value',
+        validators=[
+            MinValueValidator(0),
+        ]
     )
     date = models.DateTimeField(
         verbose_name='Date',
     )
 
+class Receiving(models.Model):
+    client = models.ForeignKey(
+        Client,
+        on_delete=models.DO_NOTHING,
+        related_name='receipts',
+    )
+    value = models.IntegerField(
+        verbose_name='Value',
+        validators=[
+            MinValueValidator(0),
+        ]
+    )
+    date = models.DateTimeField(
+        verbose_name='Date',
+    )
