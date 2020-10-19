@@ -3,17 +3,16 @@ version: "3.7"
 services:
 
     api:
-        build: ./api
+        build: ./server/api
         restart: always
         volumes: 
-            - ./server:/home/app/.share/:z
+            - ./server/api:/home/app/.share/:z
         command: pypy3 manage.py runserver 0.0.0.0:8000
         environment: 
             PYTHONUNBUFFERED: 1
         depends_on: 
             - proxy
             - db
-            - client_auth
         networks: 
             db:
                 ipv4_address: 172.25.20.10
@@ -23,7 +22,7 @@ services:
     proxy:
         image: nginx
         volumes: 
-            - ./proxy/nginx/conf.d:/etc/nginx/conf.d:z
+            - ./server/proxy/nginx/conf.d:/etc/nginx/conf.d:z
         ports:
             - 80:80
             - 443:443
