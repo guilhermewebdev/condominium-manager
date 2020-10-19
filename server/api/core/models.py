@@ -1,7 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-# Create your models here.
 class PlanOfAccounts(models.Model):
     name = models.CharField(
         max_lengt=150,
@@ -19,3 +18,13 @@ class PlanOfAccounts(models.Model):
         null=True,
         related_name='childs',
     )
+
+class Client(models.Model):
+    name = models.CharField(
+        max_length=150,
+    )
+    apartament = models.CharField(
+        max_length=5
+    )
+
+    
