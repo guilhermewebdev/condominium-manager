@@ -23,7 +23,7 @@ class PlanOfAccounts(models.Model):
         ]
     )
     parent = models.ForeignKey(
-        PlanOfAccounts,
+        'PlanOfAccounts',
         on_delete=models.CASCADE,
         null=True,
         related_name='childs',
