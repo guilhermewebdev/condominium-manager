@@ -1,11 +1,25 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
+from django.contrib.auth.models import User
+
 
 class Condominium(models.Model):
     name = models.CharField(
         max_length=150
     )
+
+class Manager(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+    )
+    condominium = models.ForeignKey(
+        Condominium,
+        on_delete=models.CASCADE,
+        related_name='managers',
+    )
+
 class PlanOfAccounts(models.Model):
     condominium = models.ForeignKey(
         Condominium,
