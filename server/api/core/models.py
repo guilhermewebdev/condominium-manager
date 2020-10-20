@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
-
+import datetime
 
 class Condominium(models.Model):
     name = models.CharField(
@@ -83,3 +83,32 @@ class Receiving(models.Model):
     date = models.DateTimeField(
         verbose_name='Date',
     )
+
+class Reports(models.Model):
+    condominium = models.ForeignKey(
+        Condominium,
+        on_delete=models.CASCADE,
+        related_name='reports',
+    )
+
+    @property
+    def total_balance(self):
+        receipts = self.condominium.receipts.all().aggregate(models.Sum('value'))
+        expenses = self.condominium.expenses.all().aggregate(models.Sum('value'))
+        return receipts - expenses
+
+    @property
+    def last_moonth_balance(self):
+        today = datetime.date.today()
+        receipts = self.condominium.receipts.all().filter(
+            date__month=today.month,
+            date__year=today.year,
+        ).aggregate(models.Sum('value'))
+        expenses = self.condominium.expenses.all().filter(
+            date__month=today.month,
+            date__year=today.year,
+        ).aggregate(models.Sum('value'))
+        return receipts - expenses
+
+    class Meta:
+        abstract = True
